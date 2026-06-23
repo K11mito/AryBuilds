@@ -388,52 +388,110 @@
   }
 
   /* ============================================================
-     PARTS
+     PARTS — interactive personal checklist (toggles persist
+     per visitor in localStorage; cost total updates live)
      ============================================================ */
+  function loadHave(id) {
+    try { return new Set(JSON.parse(localStorage.getItem('mybuilds:have:' + id) || '[]')); }
+    catch (e) { return new Set(); }
+  }
+  function saveHave(id, set) {
+    try { localStorage.setItem('mybuilds:have:' + id, JSON.stringify([...set])); } catch (e) { }
+  }
+
   function renderParts(b) {
     const cur = b.parts.currency;
-    let total = 0, toBuy = 0, owned = 0, buyCount = 0;
+    let total = 0, partCount = 0;
     b.parts.groups.forEach(g => g.items.forEach(it => {
-      if (typeof it.cost === 'number') { total += it.cost; if (it.status === 'buy') { toBuy += it.cost; buyCount++; } }
-      if (it.status === 'owned') owned++;
+      if (typeof it.cost === 'number') total += it.cost;
+      partCount++;
     }));
+
+    const have = loadHave(b.id);
 
     const groups = b.parts.groups.map(g => `
       <div class="parts-group reveal">
         <table class="parts-table">
-          <thead><tr><th colspan="2">${g.name}</th><th>Qty</th><th>Status</th><th style="text-align:right">Cost</th></tr></thead>
+          <colgroup><col class="c-icon"><col class="c-name"><col class="c-qty"><col class="c-have"><col class="c-cost"></colgroup>
+          <thead><tr><th colspan="2">${g.name}</th><th>Qty</th><th>Have it?</th><th style="text-align:right">Cost</th></tr></thead>
           <tbody>
-            ${g.items.map(it => `
-              <tr>
+            ${g.items.map(it => {
+              const key = it.name;
+              const has = have.has(key);
+              const nameHtml = it.url
+                ? `<a class="pt-link" href="${it.url}" target="_blank" rel="noopener">${it.name} <span class="pt-ext">${UI.external}</span></a>`
+                : it.name;
+              return `
+              <tr data-part="${key.replace(/"/g, '&quot;')}" data-cost="${typeof it.cost === 'number' ? it.cost : 0}" class="${has ? 'is-have' : ''}">
                 <td class="pt-icon">${ICONS[it.icon] || ''}</td>
-                <td class="pt-name">${it.name}${it.optional ? ' <em style="color:var(--ink-3);font-family:var(--mono);font-size:10px">opt</em>' : ''}<small>${it.sub}${it.notes ? ' — ' + it.notes : ''}</small></td>
+                <td class="pt-name">${nameHtml}${it.optional ? ' <em class="pt-opt">opt</em>' : ''}<small>${it.sub}${it.notes ? ' — ' + it.notes : ''}</small></td>
                 <td class="pt-qty">${it.qty}</td>
-                <td><span class="badge badge--${it.status}">${it.status === 'buy' ? 'Buy' : it.status === 'print' ? 'Print' : 'Owned'}</span></td>
+                <td class="pt-have"><button class="have-toggle" aria-pressed="${has}" aria-label="Toggle whether you have ${it.name}">
+                  <span class="have-box"></span><span class="have-label">${has ? 'Got it' : 'Need it'}</span></button></td>
                 <td class="pt-cost">${cur}${it.cost}</td>
-              </tr>`).join('')}
+              </tr>`;
+            }).join('')}
           </tbody>
         </table>
       </div>`).join('');
 
-    return node(`
+    const view = node(`
       <div class="view subpage">
         <div class="wrap">
           <div class="subpage__head">
             <span class="eyebrow">${b.name} · BOM</span>
             <h1>Parts List</h1>
-            <p>Grouped by subsystem with owned/buy status and a running total. Most of it I already had; the "buy" rows are the only shopping trip.</p>
+            <p>Everything you need to build it, each linked to where I bought it. <strong>Tick off what you already have</strong> — your remaining cost updates as you go, and it's saved in your browser.</p>
           </div>
           <div class="cost-bar reveal">
-            <div class="cost-bar__item">Project value<strong>${cur}${total}</strong></div>
-            <div class="cost-bar__item">Still to buy<strong class="accent">${cur}${toBuy}</strong></div>
-            <div class="cost-bar__item">Items owned<strong>${owned}</strong></div>
+            <div class="cost-bar__item">Full build<strong>${cur}${total}</strong></div>
+            <div class="cost-bar__item">You still need<strong class="accent" data-stat="remaining">${cur}${total}</strong></div>
+            <div class="cost-bar__item">You have<strong data-stat="have">0 / ${partCount}</strong></div>
             <div class="cost-bar__spacer"></div>
-            <div class="cost-bar__item">Shopping rows<strong>${buyCount}</strong></div>
+            <button class="cost-reset" data-reset>Reset</button>
           </div>
           ${groups}
         </div>
         ${footer()}
       </div>`);
+
+    wireParts(view, b.id, cur, partCount, have);
+    return view;
+  }
+
+  function wireParts(view, buildId, cur, partCount, have) {
+    const remainEl = view.querySelector('[data-stat="remaining"]');
+    const haveEl = view.querySelector('[data-stat="have"]');
+    const recompute = () => {
+      let remaining = 0, count = 0;
+      view.querySelectorAll('tr[data-part]').forEach(tr => {
+        if (tr.classList.contains('is-have')) count++; else remaining += +tr.dataset.cost || 0;
+      });
+      remainEl.textContent = cur + remaining;
+      haveEl.textContent = count + ' / ' + partCount;
+    };
+    view.querySelectorAll('.have-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tr = btn.closest('tr');
+        const nowHave = tr.classList.toggle('is-have');
+        btn.setAttribute('aria-pressed', nowHave);
+        btn.querySelector('.have-label').textContent = nowHave ? 'Got it' : 'Need it';
+        if (nowHave) have.add(tr.dataset.part); else have.delete(tr.dataset.part);
+        saveHave(buildId, have);
+        recompute();
+      });
+    });
+    const reset = view.querySelector('[data-reset]');
+    if (reset) reset.addEventListener('click', () => {
+      have.clear(); saveHave(buildId, have);
+      view.querySelectorAll('tr[data-part]').forEach(tr => tr.classList.remove('is-have'));
+      view.querySelectorAll('.have-toggle').forEach(btn => {
+        btn.setAttribute('aria-pressed', 'false');
+        btn.querySelector('.have-label').textContent = 'Need it';
+      });
+      recompute();
+    });
+    recompute();
   }
 
   /* ============================================================
@@ -452,9 +510,10 @@
             ${Object.entries(m.settings).map(([k, v]) => `<div class="spec-cell">${k}<strong>${v}</strong></div>`).join('')}
           </div>
           <p class="model-card__notes">${m.notes}</p>
-          ${m.noStl ? '' : `<div class="model-card__dl">
-            <a class="btn ${m.stl ? '' : 'dl-disabled'}" ${m.stl ? '' : 'aria-disabled="true"'}>${UI.download} ${m.stl ? 'STL' : 'STL pending'}</a>
-          </div>`}
+          ${(m.buyUrl || !m.noStl) ? `<div class="model-card__dl">
+            ${m.buyUrl ? `<a class="btn" href="${m.buyUrl}" target="_blank" rel="noopener">${UI.external} Buy on Shopee</a>` : ''}
+            ${!m.noStl ? `<a class="btn ${m.stl ? '' : 'dl-disabled'}" ${m.stl ? '' : 'aria-disabled="true"'}>${UI.download} ${m.stl ? 'STL' : 'STL pending'}</a>` : ''}
+          </div>` : ''}
         </div>
       </div>`).join('');
 
@@ -554,7 +613,7 @@
       <div class="manifesto__inner">
         <span class="manifesto__kicker">The one rule</span>
         <h2 class="manifesto__quote">For a personal project, optimize for one thing — <em>finishing the project.</em></h2>
-        <p class="manifesto__sub">It's the number one thing to aim for. Not the cleanest code, not the perfect part — just getting it across the line. That's what got me through, and it's why this logbook exists.</p>
+        <p class="manifesto__sub">Fuck trying to perfect it, it will never happen. Personal Projects have a unique requirment, FINISHING THE DAMN THING, everything else is secondary. You are not optimizing for cost, telemetry, or quality, you are optimizing for finishing the project. So set requiremnts and reach them no matter what.</p>
         <div class="manifesto__ship">
           <div class="manifesto__track"><span></span></div>
           <span class="manifesto__shiplabel">✓ finished &gt; perfect</span>

@@ -319,21 +319,21 @@ window.BUILDS = [
     currency: '฿',
     groups: [
       { name: 'Compute & Control', items: [
-        { icon: 'nano', name: 'Arduino Nano', sub: 'USB-C clone · CH340', qty: '×1', status: 'owned', cost: 120, notes: 'USB serial → PWM bridge' },
-        { icon: 'pca',  name: 'PCA9685', sub: '16-channel PWM driver', qty: '×1', status: 'owned', cost: 90, notes: 'I²C, drives both servos' },
+        { icon: 'nano', name: 'Arduino Nano', sub: 'USB-C clone · CH340', qty: '×1', status: 'owned', cost: 120, url: 'https://shopee.co.th/product/944231623/20382516205', notes: 'USB serial → PWM bridge' },
+        { icon: 'pca',  name: 'PCA9685', sub: '16-channel PWM driver', qty: '×1', status: 'owned', cost: 90, url: 'https://shopee.co.th/product/117988183/6951374745', notes: 'I²C, drives both servos' },
       ]},
       { name: 'Motion', items: [
-        { icon: 'servo',   name: 'SG90 micro servo', sub: 'pan + tilt', qty: '×2', status: 'owned', cost: 140, notes: 'plastic-gear, plenty for this load' },
+        { icon: 'servo',   name: 'SG90 micro servo', sub: 'pan + tilt', qty: '×2', status: 'owned', cost: 140, url: 'https://shopee.co.th/product/944231623/23223080672', notes: 'plastic-gear, plenty for this load' },
         { icon: 'battery', name: '5V servo-rail power', sub: '4×AA holder + cells', qty: '×1', status: 'buy', cost: 120, notes: 'never power servos from USB — brownout risk' },
       ]},
       { name: 'Output', items: [
-        { icon: 'laser', name: 'KY-008 laser module', sub: '650nm · 6mm · 5V', qty: '×1', status: 'owned', cost: 35, notes: 'wired always-on, direct to 5V/GND' },
+        { icon: 'laser', name: 'KY-008 laser module', sub: '650nm · 6mm · 5V', qty: '×1', status: 'owned', cost: 35, url: 'https://shopee.co.th/product/944231623/23922639053', notes: 'wired always-on, direct to 5V/GND' },
       ]},
       { name: 'Vision', items: [
-        { icon: 'webcam', name: 'USB webcam', sub: 'OV3660 · 1080p · 110° FOV', qty: '×1', status: 'owned', cost: 350, notes: 'plug-and-play UVC' },
+        { icon: 'webcam', name: 'USB webcam', sub: 'OV3660 · 1080p · 110° FOV', qty: '×1', status: 'owned', cost: 350, url: 'https://shopee.co.th/product/1128156347/44307745789', notes: 'plug-and-play UVC' },
       ]},
       { name: 'Wiring & Mounting', items: [
-        { icon: 'jumperFF', name: 'Jumper wires', sub: 'M-M, M-F, F-F assortment', qty: '—', status: 'owned', cost: 60, notes: 'F-F for board hops, M-F for the laser' },
+        { icon: 'jumperFF', name: 'Jumper wires', sub: 'M-M, M-F, F-F assortment', qty: '—', status: 'owned', cost: 60, url: 'https://shopee.co.th/product/944231623/24520413128', notes: 'F-F for board hops, M-F for the laser' },
       ]},
     ],
     dropped: [
@@ -350,10 +350,12 @@ window.BUILDS = [
      --------------------------------------------------------- */
   models: [
     { name: 'Pan + tilt base', status: 'done', statusLabel: 'Off-the-shelf',
-      settings: { Type: 'SG90 2-axis', Material: 'ABS', Servos: '2 × SG90', Mount: 'desk', Source: 'kit' },
-      notes: 'A standard white SG90 pan-tilt bracket holds both servos. The whole turret pivots and nods on this.',
+      settings: { Type: 'SG90 2-axis', Material: 'ABS', Servos: '2 × SG90', Mount: 'desk', Source: 'Shopee' },
+      notes: 'A standard white SG90 pan-tilt bracket holds both servos. Ready-made — buy online or swap in a custom print later.',
       image: 'images/pantilt.png',
-      photo: { tag: 'Photo pending', sub: 'pan-tilt base' }, stl: false, noStl: true },
+      photo: { tag: 'Photo pending', sub: 'pan-tilt base' },
+      buyUrl: 'https://shopee.co.th/Servo-bracket-PT-Pan-Tilt-Camera-Mount-FPV-for-9G-SG90-MG90S-(%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%A1%E0%B8%B5%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B9%82%E0%B8%A7)-i.78966549.4145551146',
+      stl: false, noStl: true },
     { name: 'Camera + laser face', status: 'wip', statusLabel: 'Cardboard',
       settings: { Material: 'cardboard', Hold: 'rubber band', Camera: '30×25mm', Laser: 'KY-008 6mm', Rev: 'v0.5' },
       notes: 'The camera and laser ride a cardboard face strapped on with a rubber band — the ODTS v0.5 prototype. A proper printed bracket (recessed camera pocket + 6mm laser cradle + horn boss) is still being modelled.',
