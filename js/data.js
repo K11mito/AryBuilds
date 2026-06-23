@@ -7,7 +7,7 @@
 window.BUILDS = [
 {
   id: 'laser-turret',
-  name: 'ODTS',
+  name: 'ODTS v.05',
   tagline: 'Object Detection Tracking System, basically a turret that finds a face or object and paints it with a laser dot.',
   status: 'In Progress',
   statusKind: 'active',
@@ -319,21 +319,21 @@ window.BUILDS = [
     currency: '฿',
     groups: [
       { name: 'Compute & Control', items: [
-        { icon: 'nano', name: 'Arduino Nano', sub: 'USB-C clone · CH340', qty: '×1', status: 'owned', cost: 120, url: 'https://shopee.co.th/product/944231623/20382516205', notes: 'USB serial → PWM bridge' },
-        { icon: 'pca',  name: 'PCA9685', sub: '16-channel PWM driver', qty: '×1', status: 'owned', cost: 90, url: 'https://shopee.co.th/product/117988183/6951374745', notes: 'I²C, drives both servos' },
+        { icon: 'nano', name: 'Arduino Nano', sub: 'USB-C clone · CH340', qty: '×1', status: 'owned', cost: 147, url: 'https://shopee.co.th/product/944231623/20382516205', notes: 'USB serial → PWM bridge' },
+        { icon: 'pca',  name: 'PCA9685', sub: '16-channel PWM driver', qty: '×1', status: 'owned', cost: 127, url: 'https://shopee.co.th/product/117988183/6951374745', notes: 'I²C, drives both servos' },
       ]},
       { name: 'Motion', items: [
-        { icon: 'servo',   name: 'SG90 micro servo', sub: 'pan + tilt', qty: '×2', status: 'owned', cost: 140, url: 'https://shopee.co.th/product/944231623/23223080672', notes: 'plastic-gear, plenty for this load' },
-        { icon: 'battery', name: '5V servo-rail power', sub: '4×AA holder + cells', qty: '×1', status: 'buy', cost: 120, notes: 'never power servos from USB — brownout risk' },
+        { icon: 'servo',   name: 'SG90 micro servo', sub: 'pan + tilt', qty: '×2', status: 'owned', cost: 84, url: 'https://shopee.co.th/product/944231623/23223080672', notes: '฿42 each · plastic-gear, plenty for this load' },
+        { icon: 'battery', name: '5V servo-rail power', sub: '4×AA holder + cells', qty: '×1', status: 'buy', cost: 22, url: 'https://shopee.co.th/product/944231623/27124122099', notes: 'never power servos from USB — brownout risk' },
       ]},
       { name: 'Output', items: [
-        { icon: 'laser', name: 'KY-008 laser module', sub: '650nm · 6mm · 5V', qty: '×1', status: 'owned', cost: 35, url: 'https://shopee.co.th/product/944231623/23922639053', notes: 'wired always-on, direct to 5V/GND' },
+        { icon: 'laser', name: 'KY-008 laser module', sub: '650nm · 6mm · 5V', qty: '×1', status: 'owned', cost: 32, url: 'https://shopee.co.th/product/944231623/23922639053', notes: 'wired always-on, direct to 5V/GND' },
       ]},
       { name: 'Vision', items: [
-        { icon: 'webcam', name: 'USB webcam', sub: 'OV3660 · 1080p · 110° FOV', qty: '×1', status: 'owned', cost: 350, url: 'https://shopee.co.th/product/1128156347/44307745789', notes: 'plug-and-play UVC' },
+        { icon: 'webcam', name: 'USB webcam', sub: 'OV3660 · 1080p · 110° FOV', qty: '×1', status: 'owned', cost: 416, url: 'https://shopee.co.th/product/1128156347/44307745789', notes: 'plug-and-play UVC' },
       ]},
       { name: 'Wiring & Mounting', items: [
-        { icon: 'jumperFF', name: 'Jumper wires', sub: 'M-M, M-F, F-F assortment', qty: '—', status: 'owned', cost: 60, url: 'https://shopee.co.th/product/944231623/24520413128', notes: 'F-F for board hops, M-F for the laser' },
+        { icon: 'jumperFF', name: 'Jumper wires', sub: 'M-M, M-F, F-F · per set', qty: '—', status: 'owned', cost: 22, url: 'https://shopee.co.th/product/944231623/24520413128', notes: 'F-F for board hops, M-F for the laser' },
       ]},
     ],
     dropped: [

@@ -87,7 +87,8 @@
         <div>
           <div class="ghost__plus">+</div>
           <p>Build 0${BUILDS.length + 1}</p>
-          <small>Slot's ready — a new build is just another data block.</small>
+          <span class="badge badge--planned ghost__badge">Coming soon</span>
+          <small>a new build is just another data block.</small>
         </div>
       </div>`;
 
@@ -523,7 +524,7 @@
           <div class="subpage__head">
             <span class="eyebrow">${b.name} · the build</span>
             <h1>The Rig</h1>
-            <p>The actual ODTS v0.5: an off-the-shelf SG90 pan-tilt base, a cardboard camera face strapped on with a rubber band, all on a parcel box. A proper printed camera bracket is still on the way.</p>
+            <p>The actual ODTS : an off-the-shelf SG90 pan-tilt base, a cardboard camera face strapped on with a rubber band, all on a parcel box. A proper printed camera bracket is still on the way.</p>
           </div>
           <div class="models-grid">${cards}</div>
         </div>
@@ -569,7 +570,7 @@
             <div class="sw-panel reveal">
               <h3>File structure</h3>
               <div class="file-tree">
-                <div class="ft-root">ODTS/ <span style="color:var(--ink-4);font-weight:400">· main</span></div>
+                <div class="ft-root">ODTS v.1/ <span style="color:var(--ink-4);font-weight:400">· main</span></div>
                 ${files}
               </div>
               <pre class="code" style="margin-top:18px">${s.codePeek}</pre>

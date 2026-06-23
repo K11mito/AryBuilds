@@ -266,6 +266,7 @@ button { font-family: inherit; cursor: pointer; }
 .card--ghost .ghost__plus { font-family: var(--serif); font-size: 40px; color: var(--ink-4); margin-bottom: 8px; }
 .card--ghost p { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
 .card--ghost small { display:block; margin-top: 6px; font-family: var(--sans); font-size: 12.5px; text-transform: none; letter-spacing: 0; color: var(--ink-4); max-width: 220px; }
+.card--ghost .ghost__badge { margin-top: 12px; }
 
 /* ============================================================
    BUILD HUB
