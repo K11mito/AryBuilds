@@ -749,6 +749,8 @@ button { font-family: inherit; cursor: pointer; }
   .sw-layout { grid-template-columns: 1fr; }
   .file-tree .ft-row { grid-template-columns: 1fr; gap: 2px; }
   .file-tree .ft-desc { padding-left: 14px; }
+  /* decoration bleeds through the text once columns collapse — drop it */
+  .manifesto__bg { display: none; }
 }
 @media (max-width: 560px) {
   .topbar__meta { display: none; }
@@ -757,6 +759,9 @@ button { font-family: inherit; cursor: pointer; }
   .cost-bar { padding: 16px 18px; }
   .parts-table .pt-icon { display: none; }
   .book-hint .keys { display: none; }
+  /* credo: a wrapping rounded box instead of an overflowing pill */
+  .hero-credo { display: block; border-radius: 14px; padding: 13px 16px 14px; line-height: 1.75; font-size: 11px; }
+  .hero-credo__tag { display: inline-block; margin-right: 9px; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
